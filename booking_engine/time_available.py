@@ -106,7 +106,7 @@ def is_datetime_range_available(dt_range, availability = {}):
         return True
 
     if is_same_date(dt_range):
-        return is_date_available(yesterday(start_date), a) and contains_in_wh_of_date(yesterday(start_date, merge=False))    
+        return is_date_available(yesterday(start_date), a) and contains_in_wh_of_date(yesterday(start_date), merge=False)    
     
     return False
 
@@ -117,7 +117,7 @@ def nearest_working_datetime_range(dt_range, availability = {}):
     """
     a = defaulitize_availability(availability)
     start_dt, end_dt = dt_range
-    tomorrow_available = is_date_available(tomorrow(start_date), a)
+    tomorrow_available = is_date_available(tomorrow(start_dt), a)
     working_hours = working_hours_of_date(start_dt.date(), a['special_working_hours'], 
         a['week_working_hours'], merge=tomorrow_available)
     

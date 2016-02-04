@@ -14,64 +14,6 @@ from time_util import start_of_tomorrow
     # res_diffs = compose(map(lambda p: diff(*p)), get('periods'))
     # return compose(min, map(min), map(res_diffs))(resources)
 
-period = (
-    datetime(year=2016, month=2, day=2, hour=9),
-    datetime(year=2016, month=2, day=4, hour=12)
-)
-
-resources = [
-    {
-        'type': 'sedia',
-        'delta_periods': [
-            (timedelta(0), timedelta(minutes=30)),
-            (timedelta(minutes=30), timedelta(hours=2))
-        ]
-    }
-]
-
-resources = [
-    {
-        'type': 'sedia',
-        'occupations': [],
-        'availability': {
-        }
-    },
-    {
-        'type': 'sedia'
-    }
-]
-
-availability = {
-    'special_closing_days': [
-        date(year=2016, month=9, day=22),
-    ],
-    'special_working_hours': {
-        '2016-02-04': [
-            (time(hour=9), time(hour=9, minute=30)),
-        ]
-    },
-    'fixed_closing_days': [
-        date(year=4, month=2, day=29),
-        date(year=4, month=2, day=3)
-    ],
-    'week_working_hours': {
-        # Martedi
-        1: [
-            (time(hour=0), time(hour=1)),
-            (time(hour=9), time(hour=12)),
-            (time(hour=14), time(hour=18)),
-            (time(hour=23), time(hour=0))
-        ],
-        2: [
-            (time(hour=0), time(hour=2)),
-            (time(hour=9), time(hour=12)),
-            (time(hour=14), time(hour=16))
-        ],
-    }
-}
-
-
-
 
 def get_service_duration(service_recipe):
     """
@@ -108,17 +50,20 @@ def calculate_ranges(period, availability, service_recipe, resources):
     loop_dt_range = by_timedelta_range((timedelta(0), delta_duration), period_start_dt)
 
     while contains(period, loop_dt_range):
-        
+
+        print "a", loop_dt_range
         if not is_datetime_range_available(loop_dt_range, availability):
             near_working_dt_range = nearest_working_datetime_range(loop_dt_range, availability)
-
+            print "b", near_working_dt_range
             if near_working_dt_range is not None:
+                print 1
                 loop_dt_range = by_timedelta_range((timedelta(0), delta_duration), near_working_dt_range[0])
             else:
+                print 2
                 loop_dt_range = by_timedelta_range((timedelta(0), delta_duration), start_of_tomorrow(loop_dt_range[0].date()))
 
             continue
-
+        
 
         #TODO: check resources for loop_dt_range
         #if get_resources_for_service(loop_dt_range, service_config, resources ):
