@@ -1,6 +1,6 @@
 from toolz import partial, merge, flip
 from time_util import parse_date, date_with_year, format_date, yesterday, tomorrow
-from datetime_range import by_time_range, contains, is_same_date, end_after_or_eq, merge_dts
+from datetime_range import by_time_range, contains, is_same_date, end_after_or_eq, merge_ranges
 from funct_util import any_match, first_match
 from datetime import time
 
@@ -77,7 +77,7 @@ def working_hours_of_date(d, special_working_hours = {}, week_working_hours = {}
 
     if len(tomorrow_working_hours):
         if today_working_hours[-1][1] == time(0) and tomorrow_working_hours[0][0] == time(0):
-            today_working_hours[-1] = merge_dts(today_working_hours[-1], tomorrow_working_hours[0])
+            today_working_hours[-1] = merge_ranges(today_working_hours[-1], tomorrow_working_hours[0])
             return to_dt_ranges(today_working_hours[:-1]) + to_dt_ranges([today_working_hours[-1]], True) 
             
     return to_dt_ranges(today_working_hours)  
@@ -117,7 +117,8 @@ def nearest_working_datetime_range(dt_range, availability = {}):
     """
     a = defaulitize_availability(availability)
     start_dt, end_dt = dt_range
-    tomorrow_available = is_date_available(tomorrow(start_dt), a)
+
+    tomorrow_available = is_date_available(tomorrow(start_dt.date()), a)
     working_hours = working_hours_of_date(start_dt.date(), a['special_working_hours'], 
         a['week_working_hours'], merge=tomorrow_available)
     
