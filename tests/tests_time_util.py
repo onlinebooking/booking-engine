@@ -6,7 +6,7 @@ from booking_engine.time_util import (
 )
 
 
-class TestEngine(unittest.TestCase):
+class TestTimeUtil(unittest.TestCase):
 
     def setUp(self):
         pass
