@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime, time, date, timedelta
 from booking_engine.datetime_range import (
     by_timedelta_range, by_time_range, is_same_date, overlaps, contains,
-    end_after_or_eq, merge_ranges
+    end_after_or_eq, merge_ranges,
 )
 
 
@@ -26,7 +26,7 @@ class TestDateTimeRange(unittest.TestCase):
         self.assertEqual(by_timedelta_range(timedelta_range, dt),
                          expected_dt_range)
 
-    def test_by_time_range(self):
+    def test_by_time_range_with_start_lower_than_end(self):
         time_range = time(hour=9, minute=20), time(13, minute=30)
         d = date(year=2016, month=2, day=28)
 
@@ -37,13 +37,24 @@ class TestDateTimeRange(unittest.TestCase):
 
         self.assertEqual(by_time_range(time_range, d), expected_dt_range)
 
-    def test_by_time_range_that_span_tomorrow(self):
+    def test_by_time_range_with_star_greater_than_end(self):
         time_range = time(hour=21, minute=30), time(4, minute=30)
         d = date(year=2016, month=2, day=28)
 
         expected_dt_range = (
             datetime(year=2016, day=28, month=2, hour=21, minute=30),
             datetime(year=2016, day=29, month=2, hour=4, minute=30)
+        )
+
+        self.assertEqual(by_time_range(time_range, d), expected_dt_range)
+
+    def test_by_time_range_with_star_equals_to_end(self):
+        time_range = time(hour=21, minute=30), time(21, minute=30)
+        d = date(year=2016, month=2, day=28)
+
+        expected_dt_range = (
+            datetime(year=2016, day=28, month=2, hour=21, minute=30),
+            datetime(year=2016, day=29, month=2, hour=21, minute=30)
         )
 
         self.assertEqual(by_time_range(time_range, d), expected_dt_range)
