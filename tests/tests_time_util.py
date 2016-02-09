@@ -2,7 +2,7 @@ import unittest
 from datetime import date, datetime
 from booking_engine.time_util import (
     parse_date, format_date, date_with_year, start_of_day,
-    tomorrow, yesterday, start_of_tomorrow, start_of_yesterday
+    tomorrow, yesterday, start_of_tomorrow, start_of_yesterday,
 )
 
 

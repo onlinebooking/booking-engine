@@ -1,6 +1,6 @@
 def any_match(predicate, iterable):
     """
-    Return True if any element of the iterable match the predicate
+    Return True if any element of the iterable match the predicate.
     """
     if predicate is None:
         predicate = bool
@@ -12,7 +12,7 @@ def any_match(predicate, iterable):
 
 def first_match(predicate, iterable):
     """
-    Return the first element of iterable that match the predicate
+    Return the first element of iterable that match the predicate.
     """
     if predicate is None:
         predicate = bool
