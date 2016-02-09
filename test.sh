@@ -1,1 +1,1 @@
-nosetests --with-coverage --cover-package=booking_engine
+nosetests --verbose --nocapture --with-coverage --cover-package=booking_engine
