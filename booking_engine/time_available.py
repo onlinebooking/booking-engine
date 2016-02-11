@@ -63,7 +63,7 @@ def working_hours_of_date(d, special_working_hours = {}, week_working_hours = {}
     def to_dt_ranges(wh, span_tomorrow=False):
         by_time_range_span_tomorrow = partial(by_time_range, span_tomorrow=span_tomorrow)
         partial_by_time_range = partial(flip(by_time_range_span_tomorrow), d)
-        return map(partial_by_time_range, wh)
+        return filter(None, map(partial_by_time_range, wh))
 
     
     today_working_hours = concrete_working_hours(d, special_working_hours, week_working_hours)
