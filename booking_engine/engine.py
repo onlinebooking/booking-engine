@@ -51,15 +51,15 @@ def calculate_ranges(period, availability, service_recipe, resources):
 
     while contains(period, loop_dt_range):
 
-        print "a", loop_dt_range
+        #print "a", loop_dt_range
         if not is_datetime_range_available(loop_dt_range, availability):
             near_working_dt_range = nearest_working_datetime_range(loop_dt_range, availability)
-            print "b", near_working_dt_range
+            #print "b", near_working_dt_range
             if near_working_dt_range is not None:
-                print 1
+                #print 1
                 loop_dt_range = by_timedelta_range((timedelta(0), delta_duration), near_working_dt_range[0])
             else:
-                print 2
+                #print 2
                 loop_dt_range = by_timedelta_range((timedelta(0), delta_duration), start_of_tomorrow(loop_dt_range[0].date()))
 
             continue

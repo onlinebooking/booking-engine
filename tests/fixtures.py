@@ -50,7 +50,6 @@ availability = {
         1: [
             (time(hour=0), time(hour=1)),
             (time(hour=9), time(hour=12)),
-            (time(hour=14), time(hour=18)),
             (time(hour=23), time(hour=0))
         ],
         2: [
@@ -60,4 +59,15 @@ availability = {
         ],
     }
 }
+
+expected_ranges = [
+
+    (datetime(2016, 2, 2, 9, 0), datetime(2016, 2, 2, 10, 0)),
+    (datetime(2016, 2, 2, 9, 30), datetime(2016, 2, 2, 10, 30)),
+    (datetime(2016, 2, 2, 10, 0), datetime(2016, 2, 2, 11, 0)),
+    (datetime(2016, 2, 2, 10, 30), datetime(2016, 2, 2, 11, 30)),
+    (datetime(2016, 2, 2, 11, 0), datetime(2016, 2, 2, 12, 0)),
+    (datetime(2016, 2, 2, 23, 0), datetime(2016, 2, 3, 0, 0)),
+
+]
 

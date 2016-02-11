@@ -118,6 +118,10 @@ def nearest_working_datetime_range(dt_range, availability = {}):
     a = defaulitize_availability(availability)
     start_dt, end_dt = dt_range
 
+    # We must check if today is available
+    if not is_date_available(start_dt.date(), a):
+        return None
+
     tomorrow_available = is_date_available(tomorrow(start_dt.date()), a)
     working_hours = working_hours_of_date(start_dt.date(), a['special_working_hours'], 
         a['week_working_hours'], merge=tomorrow_available)

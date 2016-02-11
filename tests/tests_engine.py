@@ -12,7 +12,7 @@ class TestEngine(unittest.TestCase):
             fixtures.availability, fixtures.service_recipe, fixtures.resources)
         
     def test_calculate_ranges(self):
-        #TODO: infinite loop....
-        return
         ranges = engine.calculate_ranges(fixtures.period, 
             fixtures.availability, fixtures.service_recipe, fixtures.resources)
+
+        self.assertEquals(ranges, fixtures.expected_ranges)
