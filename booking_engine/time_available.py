@@ -23,7 +23,7 @@ def is_date_a_week_working_date(d, week_working_hours = {}):
     return d.weekday() in week_working_hours
 
 def is_date_a_special_working_date(d, special_working_hours = {}):
-    return d in map(parse_date, special_working_hours.keys())
+    return d in special_working_hours
 
 def is_date_available(d, availability = {}):
     a = defaulitize_availability(availability)
@@ -44,7 +44,7 @@ def concrete_working_hours(d, special_working_hours = {}, week_working_hours = {
     """
     """
     if is_date_a_special_working_date(d, special_working_hours):
-        return special_working_hours[format_date(d)]
+        return special_working_hours[d]
     elif is_date_a_week_working_date(d, week_working_hours):
         return week_working_hours[d.weekday()]
     

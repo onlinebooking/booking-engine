@@ -37,7 +37,7 @@ availability = {
         date(year=2016, month=9, day=22),
     ],
     'special_working_hours': {
-        '2016-02-04': [
+        date(2016,4,2) : [
             (time(hour=9), time(hour=9, minute=30)),
         ]
     },
