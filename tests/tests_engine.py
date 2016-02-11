@@ -15,4 +15,4 @@ class TestEngine(unittest.TestCase):
         ranges = engine.calculate_ranges(fixtures.period, 
             fixtures.availability, fixtures.service_recipe, fixtures.resources)
 
-        self.assertEquals(ranges, fixtures.expected_ranges)
+        self.assertEquals(ranges[0], fixtures.expected_ranges[0])

@@ -15,20 +15,35 @@ service_recipe = [
         'type': 'sedia',
         'delta_periods': [
             (timedelta(0), timedelta(minutes=30)),
-            (timedelta(minutes=30), timedelta(hours=2))
+            (timedelta(minutes=40), timedelta(hours=1))
         ]
     }
 ]
+
+
+#example ...
+service_occupations = [
+    (
+        { 'type' : 'sedia', "id" : 12 }, 
+        (
+            datetime(year=2016, month=2, day=2, hour=9), 
+            datetime(year=2016, month=2, day=4, hour=12)
+        )
+    ),
+
+]
+
 
 resources = [
     {
         'type': 'sedia',
         'occupations': [],
-        'availability': {
-        }
+        'id' : 1
     },
     {
-        'type': 'sedia'
+        'type': 'sedia',
+        'occupations': [],
+        'id' : 2
     }
 ]
 
@@ -62,12 +77,21 @@ availability = {
 
 expected_ranges = [
 
-    (datetime(2016, 2, 2, 9, 0), datetime(2016, 2, 2, 10, 0)),
-    (datetime(2016, 2, 2, 9, 30), datetime(2016, 2, 2, 10, 30)),
-    (datetime(2016, 2, 2, 10, 0), datetime(2016, 2, 2, 11, 0)),
-    (datetime(2016, 2, 2, 10, 30), datetime(2016, 2, 2, 11, 30)),
-    (datetime(2016, 2, 2, 11, 0), datetime(2016, 2, 2, 12, 0)),
-    (datetime(2016, 2, 2, 23, 0), datetime(2016, 2, 3, 0, 0)),
+    (
+        (datetime(2016, 2, 2, 9, 0), datetime(2016, 2, 2, 10, 0)),
+        [
+            ({'type':'sedia', 'id':1}, (datetime(2016, 2, 2, 9, 0), datetime(2016, 2, 2, 9, 30))),
+            ({'type':'sedia', 'id':1}, (datetime(2016, 2, 2, 9, 40), datetime(2016, 2, 2, 10, 0)))
+        ]
+
+    ),
+
+
+    #((datetime(2016, 2, 2, 9, 30), datetime(2016, 2, 2, 10, 30)),
+    #((datetime(2016, 2, 2, 10, 0), datetime(2016, 2, 2, 11, 0)),
+    #((datetime(2016, 2, 2, 10, 30), datetime(2016, 2, 2, 11, 30)),
+    #((datetime(2016, 2, 2, 11, 0), datetime(2016, 2, 2, 12, 0)),
+    #((datetime(2016, 2, 2, 23, 0), datetime(2016, 2, 3, 0, 0)),
 
 ]
 
