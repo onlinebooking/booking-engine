@@ -20,4 +20,3 @@ def first_match(predicate, iterable):
         if predicate(x):
             return x
     return None
-

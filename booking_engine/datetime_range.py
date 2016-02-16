@@ -14,7 +14,7 @@ def by_time_range(time_range, d, span_tomorrow=False):
     Create a new datetime_range by a time_range and date object.
     """
     start_time, end_time = time_range
-    
+
     if start_time == end_time and not span_tomorrow:
         return None
 
