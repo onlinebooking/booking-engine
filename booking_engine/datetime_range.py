@@ -1,5 +1,5 @@
 from datetime import datetime, time
-from time_util import tomorrow
+from util.time import tomorrow
 
 
 def by_timedelta_range(timedelta_range, dt):

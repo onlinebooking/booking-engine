@@ -1,9 +1,31 @@
 from datetime import datetime, time, timedelta, date
 
+galactic_service_recipe = [
+    {
+        'type': 'lasergun',
+        'delta_periods': [
+            (timedelta(0), timedelta(minutes=30)),
+            (timedelta(minutes=40), timedelta(hours=1)),
+        ]
+    },
+    {
+        'type': 'laserblade',
+        'delta_periods': [
+            (timedelta(0), timedelta(minutes=30)),
+            (timedelta(minutes=40), timedelta(hours=1)),
+            (timedelta(hours=1, minutes=20), timedelta(hours=1, minutes=30)),
+        ]
+    },
+    {
+        'type': 'starship',
+        'delta_periods': [
+            (timedelta(0), timedelta(minutes=30)),
+            (timedelta(minutes=45), timedelta(minutes=50)),
+        ]
+    }
+]
 
 wrong_period = (datetime(year=2016, month=2, day=2, hour=9),)
-
-
 
 period = (
     datetime(year=2016, month=2, day=2, hour=9),
@@ -94,4 +116,3 @@ expected_ranges = [
     #((datetime(2016, 2, 2, 23, 0), datetime(2016, 2, 3, 0, 0)),
 
 ]
-

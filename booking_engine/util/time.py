@@ -2,20 +2,6 @@ from datetime import date, time, datetime, timedelta
 from toolz import compose
 
 
-def parse_date(date_str):
-    """
-    Parse date using Y-m-d format.
-    """
-    return datetime.strptime(date_str, '%Y-%m-%d').date()
-
-
-def format_date(d):
-    """
-    Format date in Y-m-d.
-    """
-    return d.strftime('%Y-%m-%d')
-
-
 def date_with_year(year, d):
     """
     Set year to a date object, given None when the date is 29 Feb

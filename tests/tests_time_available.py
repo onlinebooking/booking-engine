@@ -1,6 +1,6 @@
 import unittest
 from datetime import date, time, datetime
-from booking_engine.time_util import tomorrow
+from booking_engine.util.time import tomorrow
 from booking_engine.time_available import (
     defaulitize_availability, is_date_a_fixed_closing_date,
     is_date_a_special_closing_date, is_date_a_week_working_date,

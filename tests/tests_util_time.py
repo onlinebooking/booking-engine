@@ -1,8 +1,8 @@
 import unittest
 from datetime import date, datetime
-from booking_engine.time_util import (
-    parse_date, format_date, date_with_year, start_of_day,
-    tomorrow, yesterday, start_of_tomorrow, start_of_yesterday,
+from booking_engine.util.time import (
+    date_with_year, start_of_day, tomorrow, yesterday,
+    start_of_tomorrow, start_of_yesterday,
 )
 
 
@@ -10,14 +10,6 @@ class TestTimeUtil(unittest.TestCase):
 
     def setUp(self):
         pass
-
-    def test_parse_date(self):
-        self.assertEqual(parse_date('2015-02-22'),
-                         date(year=2015, month=2, day=22))
-
-    def test_format_date(self):
-        self.assertEqual(format_date(date(year=2015, month=2, day=22)),
-                         '2015-02-22')
 
     def test_date_with_year(self):
         self.assertEqual(date_with_year(2015, date(year=4, month=2, day=22)),

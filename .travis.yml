@@ -2,9 +2,9 @@ language: python
 python:
   - "2.7"
 # command to install dependencies
-install: 
+install:
   - pip install -r requirements.txt
   - pip install coveralls
 # command to run tests
-script: nosetests --verbose --nocapture --with-coverage --cover-package=booking_engine
+script: nosetests --verbose --nocapture --with-coverage --cover-erase --cover-package=booking_engine
 after_success: coveralls

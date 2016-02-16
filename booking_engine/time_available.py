@@ -1,9 +1,7 @@
 from toolz import partial, merge, flip
 from datetime import time
-from funct_util import any_match, first_match
-from time_util import (
-    parse_date, date_with_year, format_date, yesterday, tomorrow,
-)
+from util.funct import any_match, first_match
+from util.time import date_with_year, yesterday, tomorrow
 from datetime_range import (
     by_time_range, contains, is_same_date, end_after_or_eq, merge_ranges,
 )
@@ -43,10 +41,6 @@ def is_date_a_week_working_date(d, week_working_hours={}):
     Check if date is in given dict of working hours mapped by weekday.
     """
     return d.weekday() in week_working_hours
-
-
-def is_date_a_special_working_date(d, special_working_hours={}):
-    return d in special_working_hours
 
 
 def is_date_a_special_working_date(d, special_working_hours={}):
@@ -189,10 +183,8 @@ def nearest_working_datetime_range(dt_range, availability={}):
     tomorrow_available = is_date_available(tomorrow(start_date), a)
     working_dt_ranges = working_datetime_ranges_of_date(
         start_date,
-        a['special_working_hours'],
-        a['week_working_hours'],
-        merge_tomorrow=tomorrow_available
-    )
+        a['special_working_hours'], a['week_working_hours'],
+        merge_tomorrow=tomorrow_available)
 
     is_near = partial(flip(end_after_or_eq), dt_range)
     return first_match(is_near, working_dt_ranges)

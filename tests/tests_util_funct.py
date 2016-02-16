@@ -1,5 +1,5 @@
 import unittest
-from booking_engine.funct_util import (
+from booking_engine.util.funct import (
     any_match, first_match,
 )
 
