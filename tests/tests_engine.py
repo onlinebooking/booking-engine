@@ -31,4 +31,4 @@ class TestEngine(unittest.TestCase):
                                   fixtures.availability,
                                   fixtures.service_recipe, fixtures.resources)
 
-        self.assertEquals(ranges[0], fixtures.expected_ranges[0])
+        self.assertEquals(ranges, fixtures.expected_ranges)

@@ -19,7 +19,7 @@ def get_service_duration(service_recipe):
 
 def get_service_step(service_recipe):
     """
-    Get step timedelta: The smaller duration of service_recipe's periods
+    Get step timedelta: The smaller duration of service_recipe's periods.
     """
     def diff(start, end):
         return end - start
@@ -27,19 +27,33 @@ def get_service_step(service_recipe):
     return compose(min, map(min), map(res_delta_diffs))(service_recipe)
 
 
-def get_resource_occupation(candidate_resources, dt_range, new_occupations):
+def clean_resource(resource):
     """
+    Resource without occupations and availability.
+    """
+    return omit(resource, 'occupations', 'availability')
+
+
+def get_resource_available_in_dt_range(candidate_resources, dt_range,
+                                       new_resource_occupations):
+    """
+    Try to find a resource available in dt_range, if no resource finded return
+    None.
     """
     for resource in candidate_resources:
-        resource_new_occupations = [y[1] for y in filter(lambda x: x[0] == resource, new_occupations)]
+        # Only occupations of current resource
+        res_new_occupations = [y[1] for y in filter(
+            lambda x: x[0] == clean_resource(resource),
+            new_resource_occupations)]
 
         # Check availability
         availability = resource.get('availability')
-        if availability and not is_datetime_range_available(dt_range, availability):
+        if (availability and not is_datetime_range_available(dt_range,
+                                                             availability)):
             continue
 
         # Check occupations
-        occupations = resource.get('occupation', []) + resource_new_occupations
+        occupations = resource.get('occupations', []) + res_new_occupations
         overlappings = [overlaps(dt_range, o) for o in occupations]
         if any(overlappings):
             continue
@@ -49,11 +63,12 @@ def get_resource_occupation(candidate_resources, dt_range, new_occupations):
     return None
 
 
-def get_resources_for_dt_range(loop_dt_range, service_recipe, resources):
+def get_resource_occupations_in_dt_range(dt_range, service_recipe, resources):
     """
-
+    Return a list of resource occupations (res, dt_range) in given dt_range
+    return None when no resources can be allocated.
     """
-    new_occupations = []
+    new_resource_occupations = []
 
     for resource_needed in service_recipe:
         candidate_resources = filter(
@@ -61,28 +76,22 @@ def get_resources_for_dt_range(loop_dt_range, service_recipe, resources):
             resources)
 
         for period in resource_needed['delta_periods']:
-            dt_range = by_timedelta_range(period, loop_dt_range[0])
+            period_dt_range = by_timedelta_range(period, dt_range[0])
 
-            new_occupations_for_type = filter(
+            new_res_occupations_for_type = filter(
                 lambda r: r[0]['type'] == resource_needed['type'],
-                new_occupations)
-            available_resource = get_resource_occupation(
-                candidate_resources, dt_range, new_occupations_for_type)
+                new_resource_occupations)
+            available_resource = get_resource_available_in_dt_range(
+                candidate_resources, period_dt_range,
+                new_res_occupations_for_type)
 
             if available_resource is None:
                 return None
 
-            clean_resource = omit(available_resource,
-                                  'occupations', 'availability')
-            new_occupations.append((clean_resource, dt_range))
+            new_resource_occupations.append(
+                (clean_resource(available_resource), period_dt_range))
 
-        # per ogni delta_period in resource_needed
-        #    - creo relativo dt_range
-        #    - per ogni risorsa disponibilie
-        #       - controllo availability per dt_range
-        #       - controllo occupation per dt_range
-
-    return new_occupations
+    return new_resource_occupations
 
 
 def calculate_ranges(period, availability, service_recipe, resources):
@@ -122,11 +131,10 @@ def calculate_ranges(period, availability, service_recipe, resources):
 
             continue
 
-        resources_for_dt_range = get_resources_for_dt_range(loop_dt_range,
-                                                            service_recipe,
-                                                            resources)
-        if resources_for_dt_range:
-            ranges.append((loop_dt_range, resources_for_dt_range))
+        resource_occupations = get_resource_occupations_in_dt_range(
+            loop_dt_range, service_recipe, resources)
+        if resource_occupations:
+            ranges.append((loop_dt_range, resource_occupations))
 
         # like i++ but more cool
         loop_dt_range = by_timedelta_range(
