@@ -9,16 +9,13 @@ def by_timedelta_range(timedelta_range, dt):
     return dt + timedelta_range[0], dt + timedelta_range[1]
 
 
-def by_time_range(time_range, d, span_tomorrow=False):
+def by_time_range(time_range, d):
     """
     Create a new datetime_range by a time_range and date object.
     """
     start_time, end_time = time_range
 
-    if start_time == end_time and not span_tomorrow:
-        return None
-
-    if span_tomorrow or end_time < start_time:
+    if end_time <= start_time:
         return datetime.combine(d, start_time), datetime.combine(tomorrow(d),
                                                                  end_time)
     else:

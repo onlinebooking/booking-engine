@@ -1,5 +1,5 @@
 from toolz import partial, merge, flip
-from datetime import time
+from datetime import time, datetime
 from util.funct import any_match, first_match
 from util.time import date_with_year, yesterday, tomorrow
 from datetime_range import (
@@ -80,14 +80,12 @@ def working_hours_of_date(d, special_working_hours={}, week_working_hours={}):
     return []
 
 
-def working_hours_to_datetime_ranges(d, working_hours, span_tomorrow=False):
+def working_hours_to_datetime_ranges(d, working_hours):
     """
     Convert working_hours to datetime_ranges on specific date.
     """
-    by_time_range_span_tomorrow = partial(by_time_range,
-                                          span_tomorrow=span_tomorrow)
-    partial_by_time_range = partial(flip(by_time_range_span_tomorrow), d)
-    return filter(None, map(partial_by_time_range, working_hours))
+    partial_by_time_range = partial(flip(by_time_range), d)
+    return map(partial_by_time_range, working_hours)
 
 
 def are_working_hours_contiguous(working_hours_start, working_hours_end):
@@ -133,10 +131,17 @@ def working_datetime_ranges_of_date(d,
                                     tomorrow_working_hours):
         # last range of today become a merged range between
         # the last of today and the first of tomorrow
-        today_working_hours[-1] = merge_ranges(today_working_hours[-1],
-                                               tomorrow_working_hours[0])
-        return (whs_to_dt_ranges(today_working_hours[:-1]) +
-                whs_to_dt_ranges([today_working_hours[-1]], True))
+        next_day = tomorrow(d)
+        if tomorrow_working_hours[0][1] == time(0):
+            next_day = tomorrow(next_day)
+        
+        last_period = (
+            datetime.combine(d, today_working_hours[-1][0]), 
+            datetime.combine(next_day, tomorrow_working_hours[0][1])
+        )
+
+        return whs_to_dt_ranges(today_working_hours[:-1]) + [last_period]
+        
 
     return whs_to_dt_ranges(today_working_hours)
 

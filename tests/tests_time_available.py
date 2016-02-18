@@ -471,5 +471,5 @@ class TestTimeAvailable(unittest.TestCase):
             )
         ]
 
-        self.assertEqual(working_datetime_ranges_of_date(d, wwh_24_7,
+        self.assertEqual(working_datetime_ranges_of_date(d, week_working_hours=wwh_24_7,
                          merge_tomorrow=True), expected_ranges)
