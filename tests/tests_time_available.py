@@ -451,3 +451,25 @@ class TestTimeAvailable(unittest.TestCase):
         self.assertEqual(r_s_merged, expected_r_only_today)
         self.assertEqual(r_c, expected_r_only_today)
         self.assertEqual(r_c_merged, expected_r_with_tomorrow)
+
+    def test_working_datetime_ranges_of_date_24_7(self):
+        d = date(year=2016, month=2, day=18)
+        wwh_24_7 = {
+            0: [(time(hour=0), time(hour=0))],
+            1: [(time(hour=0), time(hour=0))],
+            2: [(time(hour=0), time(hour=0))],
+            3: [(time(hour=0), time(hour=0))],
+            4: [(time(hour=0), time(hour=0))],
+            5: [(time(hour=0), time(hour=0))],
+            6: [(time(hour=0), time(hour=0))]
+        }
+
+        expected_ranges = [
+            (
+                datetime(year=2016, month=2, day=18, hour=0),
+                datetime(year=2016, month=2, day=20, hour=0),
+            )
+        ]
+
+        self.assertEqual(working_datetime_ranges_of_date(d, wwh_24_7,
+                         merge_tomorrow=True), expected_ranges)
