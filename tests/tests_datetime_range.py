@@ -52,33 +52,12 @@ class TestDateTimeRange(unittest.TestCase):
         time_range = time(hour=21, minute=30), time(21, minute=30)
         d = date(year=2016, month=2, day=28)
 
-        self.assertEqual(by_time_range(time_range, d), None)
-
-    def test_by_time_range_with_star_equals_to_end_span_tomorrow(self):
-        time_range = time(hour=21, minute=30), time(21, minute=30)
-        d = date(year=2016, month=2, day=28)
-
-        expected_dt_range_spanned = (
+        expected_dt_range = (
             datetime(year=2016, day=28, month=2, hour=21, minute=30),
             datetime(year=2016, day=29, month=2, hour=21, minute=30)
         )
 
-        self.assertEqual(by_time_range(time_range, d, span_tomorrow=True),
-                         expected_dt_range_spanned)
-        self.assertEqual(by_time_range(time_range, d, span_tomorrow=False),
-                         None)
-
-    def test_by_time_range_force_span_tomorrow(self):
-        time_range = time(hour=9, minute=20), time(13, minute=30)
-        d = date(year=2016, month=2, day=28)
-
-        expected_dt_range = (
-            datetime(year=2016, day=28, month=2, hour=9, minute=20),
-            datetime(year=2016, day=29, month=2, hour=13, minute=30)
-        )
-
-        self.assertEqual(by_time_range(time_range, d, span_tomorrow=True),
-                         expected_dt_range)
+        self.assertEqual(by_time_range(time_range, d), expected_dt_range)
 
     def test_is_same_date_with_same_dates(self):
         dt_range = (
