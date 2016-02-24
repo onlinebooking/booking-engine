@@ -309,25 +309,6 @@ class TestTimeAvailable(unittest.TestCase):
                 datetime(year=1993, month=9, day=26, hour=12)
             ),
             (
-                datetime(year=1993, month=9, day=26, hour=21),
-                datetime(year=1993, month=9, day=27, hour=9)
-            ),
-        ])
-
-    def test_working_hours_to_datetime_ranges_span_tomorrow(self):
-        d = date(year=1993, month=9, day=26)
-        wh = [
-            (time(hour=9), time(hour=12)),
-            (time(hour=18), time(hour=18)),
-            (time(hour=21), time(hour=9)),
-        ]
-        r = working_hours_to_datetime_ranges(d, wh, span_tomorrow=True)
-        self.assertEqual(r, [
-            (
-                datetime(year=1993, month=9, day=26, hour=9),
-                datetime(year=1993, month=9, day=27, hour=12)
-            ),
-            (
                 datetime(year=1993, month=9, day=26, hour=18),
                 datetime(year=1993, month=9, day=27, hour=18)
             ),
@@ -471,5 +452,7 @@ class TestTimeAvailable(unittest.TestCase):
             )
         ]
 
-        self.assertEqual(working_datetime_ranges_of_date(d, week_working_hours=wwh_24_7,
-                         merge_tomorrow=True), expected_ranges)
+        ranges = working_datetime_ranges_of_date(
+            d, week_working_hours=wwh_24_7, merge_tomorrow=True)
+
+        self.assertEqual(ranges, expected_ranges)

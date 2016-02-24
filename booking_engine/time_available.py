@@ -131,17 +131,22 @@ def working_datetime_ranges_of_date(d,
                                     tomorrow_working_hours):
         # last range of today become a merged range between
         # the last of today and the first of tomorrow
+
         next_day = tomorrow(d)
+
+        # when tomorrow working hour end at 00:00, certainly is (00:00, 00:00)
+        # because is a contiguous with today working hours, in this case
+        # we add a day to current date because end at 00:00 of day after
+        # this cover 24/7 like situation
         if tomorrow_working_hours[0][1] == time(0):
             next_day = tomorrow(next_day)
-        
+
         last_period = (
-            datetime.combine(d, today_working_hours[-1][0]), 
+            datetime.combine(d, today_working_hours[-1][0]),
             datetime.combine(next_day, tomorrow_working_hours[0][1])
         )
 
         return whs_to_dt_ranges(today_working_hours[:-1]) + [last_period]
-        
 
     return whs_to_dt_ranges(today_working_hours)
 

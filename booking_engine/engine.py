@@ -41,6 +41,7 @@ def get_resource_available_in_dt_range(candidate_resources, dt_range,
     None.
     """
     for resource in candidate_resources:
+
         # Only occupations of current resource
         res_new_occupations = [y[1] for y in filter(
             lambda x: x[0] == clean_resource(resource),
